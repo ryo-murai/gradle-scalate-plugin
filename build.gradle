@@ -1,0 +1,61 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+def compatibilityVersion = 1.5
+sourceCompatibility = compatibilityVersion
+targetCompatibility = compatibilityVersion
+group = 'murtools'
+version = '0.0.1'
+
+def localRepoDir = new File(System.getProperty('user.home'), 'localrepository').absolutePath
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    groovy fileTree(dir: new File(gradle.gradleHomeDir, 'lib'), includes: ['**/groovy-all-*.jar'])
+    compile gradleApi()
+
+	testCompile 'org.fusesource.scalate:scalate-core:1.5.3'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Scalate plugin',
+                   'Implementation-Version': version,
+                   'Built-By': 'ryo-murai',
+                   'Built-Date': new Date(),
+                   'Built-JDK': System.getProperty('java.version'),
+                   'Built-Gradle': gradle.gradleVersion
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0'
+}
+
+task sourcesJar(type: Jar) {
+    description 'An archive of the source code'
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+task groovydocJar(type: Jar, dependsOn: groovydoc) {
+    description 'An archive of the GroovyDocs'
+    classifier 'javadoc'
+    from groovydoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives groovydocJar
+}
+
+uploadArchives {
+    repositories {
+        ivy {
+            url localRepoDir
+        }
+    }
+}

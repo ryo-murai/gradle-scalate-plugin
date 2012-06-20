@@ -1,0 +1,6 @@
+<%@ var user: String %>
+<p>Hi ${user},</p>
+#for (i <- 1 to user.length)
+<p>${i}</p>
+#end
+<p>See, I can count!</p>

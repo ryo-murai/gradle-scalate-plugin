@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>gradle-scalate-plugin</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.springsource.sts.gradle.core.nature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.jdt.groovy.core.groovyNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>lib-dslSupport</name>
+			<type>2</type>
+			<location>C:/murair/development/java/eclipse/eclipse-jee-indigo-SR1-win32/eclipse/plugins/com.springsource.sts.gradle.core_2.9.0.201203010842-RELEASE/dslSupport</location>
+		</link>
+		<link>
+			<name>lib-global_dsld_support</name>
+			<type>2</type>
+			<location>C:/Users/murair/.groovy/greclipse/global_dsld_support</location>
+		</link>
+		<link>
+			<name>lib-plugin_dsld_support</name>
+			<type>2</type>
+			<location>C:/murair/development/java/eclipse/eclipse-jee-indigo-SR1-win32/eclipse/plugins/org.codehaus.groovy_1.8.6.xx-20120301-1000-e37-RELEASE/plugin_dsld_support</location>
+		</link>
+	</linkedResources>
+</projectDescription>
