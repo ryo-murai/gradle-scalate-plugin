@@ -52,6 +52,16 @@ artifacts {
     archives groovydocJar
 }
 
+task buildtestproject(type: GradleBuild) {
+	this.dependsOn(jar)
+	copy {
+		from jar.archivePath
+		into 'testproject/lib'
+	}
+	buildFile = 'testproject/build.gradle'
+	tasks = ['scalatePreCompile', 'test']
+}
+
 uploadArchives {
     repositories {
         ivy {
