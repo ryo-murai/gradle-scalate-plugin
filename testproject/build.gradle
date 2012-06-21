@@ -1,0 +1,36 @@
+apply plugin: 'scala'
+apply plugin: 'scalate'
+
+def scalaVersion = '2.9.2'
+
+buildscript {
+	repository {
+		flatDir(dirs: 'lib') 
+	}
+
+	dependencies {
+		classpath 'murtools:gradle-scalate-plugin:0.0.1'
+	}
+}
+
+repository {
+	mavenCentral()
+}
+
+dependencies {
+	// Libraries needed for scala
+	compile "org.scala-lang:scala-library:$scalaVersion"
+	// Libraries needed to run the scala tools
+	scalaTools "org.scala-lang:scala-compiler:$scalaVersion"
+	scalaTools "org.scala-lang:scala-library:$scalaVersion"
+
+	// Scalate Library
+	compile 'org.fusesource.scalate:scalate-core:1.5.3'
+}
+
+scalatePreCompile {
+	dependsOn(configurations.compile.buildDependencies)
+	templateSrcDir = file('src/webapp')
+	workingDirectory = file('build/scalate-out/work')
+	targetDirectory = file('build/scalate-out/gen_src')
+}
