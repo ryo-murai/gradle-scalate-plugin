@@ -1,4 +1,6 @@
-<%@ var user: User %>
+#import(org.murtools.gradle.plugins.scalate.test.Person)
+
+<%@ var user: Person %>
 <p>Hi ${user.name},</p>
 #for (i <- 1 to 3)
 <p>${i}</p>

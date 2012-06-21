@@ -12,6 +12,7 @@ class ControllerTest {
 <p>See, I can count!</p>"""
 
 		val controller = new Controller
-		assertEquals(controller.execute(new Person('scalate')), output)
+		val actual = controller.execute(new Person("scalate"))
+		assertEquals(actual, output)
 	}
 }

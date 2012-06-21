@@ -4,7 +4,7 @@ apply plugin: 'scalate'
 def scalaVersion = '2.9.2'
 
 buildscript {
-	repository {
+	repositories {
 		flatDir(dirs: 'lib') 
 	}
 
@@ -13,7 +13,7 @@ buildscript {
 	}
 }
 
-repository {
+repositories {
 	mavenCentral()
 }
 
@@ -26,11 +26,14 @@ dependencies {
 
 	// Scalate Library
 	compile 'org.fusesource.scalate:scalate-core:1.5.3'
+
+	testCompile 'junit:junit:4.10'
 }
 
 scalatePreCompile {
-	dependsOn(configurations.compile.buildDependencies)
-	templateSrcDir = file('src/webapp')
+	dependsOn(compileScala)
+	templateSrcDir = file('src/main/webapp')
 	workingDirectory = file('build/scalate-out/work')
 	targetDirectory = file('build/scalate-out/gen_src')
+	contextClass = 'org.fusesource.scalate.DefaultRenderContext'
 }
