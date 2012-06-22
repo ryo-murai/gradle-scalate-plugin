@@ -31,7 +31,6 @@ dependencies {
 }
 
 scalatePreCompile {
-	dependsOn(compileScala)
 	templateSrcDir = file('src/main/webapp')
 	workingDirectory = file('build/scalate-out/work')
 	targetDirectory = file('build/scalate-out/gen_src')

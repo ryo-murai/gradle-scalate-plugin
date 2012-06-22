@@ -15,6 +15,10 @@ class ScalatePlugin implements Plugin<Project> {
 		PrecompileTask precompileTask = project.tasks.add(SCALATE_PRECOMPILE, PrecompileTask)
 		precompileTask.description = 'Precompile the scalate templates'
 		precompileTask.group = 'Scalate'
+		
+		project.afterEvaluate {
+			precompileTask.dependsOn project.compileScala
+		}
 	}
 
 }
