@@ -8,6 +8,10 @@ import org.gradle.api.tasks.TaskAction
 
 @Slf4j
 class PrecompileTask extends DefaultTask {
+	final def DEFAULT_SRC_DIR = 'src/main/webapp'
+	final def DEFAULT_WORKDIR = 'build/scalate-out/work'
+	final def DEFAULT_CLASSES = 'build/classes/main'
+	
 	File templateSrcDir
 	File workingDirectory
 	File targetDirectory 
@@ -17,11 +21,11 @@ class PrecompileTask extends DefaultTask {
 	
 	@TaskAction
 	protected void start() {
-		def classpathURLs = convertURL(project.files(project.configurations.compile, 'build/classes/main'))
+		def classpathURLs = convertURL(project.files(project.configurations.compile, targetDirectory ?: DEFAULT_CLASSES))
 		def precompiler = loadPrecompiler(classpathURLs)
-		precompiler.invokeMethod('sources_$eq', templateSrcDir)
-		precompiler.invokeMethod('workingDirectory_$eq', workingDirectory)
-		precompiler.invokeMethod('targetDirectory_$eq', targetDirectory)
+		precompiler.invokeMethod('sources_$eq', templateSrcDir ?: DEFAULT_SRC_DIR)
+		precompiler.invokeMethod('workingDirectory_$eq', workingDirectory ?: DEFAULT_WORKDIR)
+		precompiler.invokeMethod('targetDirectory_$eq', targetDirectory ?: DEFAULT_CLASSES)
 		precompiler.invokeMethod('templates_$eq', templates?.toArray())
 		precompiler.invokeMethod('contextClass_$eq', contextClass)
 		precompiler.invokeMethod('bootClassName_$eq', bootClassName)
