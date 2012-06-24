@@ -44,8 +44,10 @@ class PrecompileTask extends DefaultTask {
 	private GroovyObject loadPrecompiler(URL[] classpathURLs) {
 		def precompilerClassName = 'org.fusesource.scalate.support.Precompiler'
 
-		ClassLoader parent = Thread.currentThread().getContextClassLoader()
-		def precompiler = new URLClassLoader(classpathURLs, parent).loadClass(precompilerClassName).newInstance()
+		def newClassLoader = new URLClassLoader(classpathURLs, Thread.currentThread().contextClassLoader)
+		Thread.currentThread().contextClassLoader = newClassLoader
+		
+		def precompiler = newClassLoader.loadClass(precompilerClassName).newInstance()
 		
 		return new Proxy().wrap(precompiler)
 	}

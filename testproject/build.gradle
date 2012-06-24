@@ -5,6 +5,7 @@ def scalaVersion = '2.9.2'
 
 buildscript {
 	repositories {
+		mavenCentral()
 		flatDir(dirs: 'lib') 
 	}
 
@@ -31,8 +32,5 @@ dependencies {
 }
 
 scalatePreCompile {
-//	templateSrcDir = file('src/main/webapp')
-//	workingDirectory = file('build/scalate-out/work')
-//	targetDirectory = file('build/scalate-out/gen_src')
 	contextClass = 'org.fusesource.scalate.DefaultRenderContext'
 }

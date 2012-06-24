@@ -5,7 +5,8 @@ import Assert._
 
 class ControllerTest {
 	@Test def render {
-		val output = """<p>Hi scalate,</p>
+		val expected = """
+<p>Hi scalate,</p>
 <p>1</p>
 <p>2</p>
 <p>3</p>
@@ -13,6 +14,6 @@ class ControllerTest {
 
 		val controller = new Controller
 		val actual = controller.execute(new Person("scalate"))
-		assertEquals(actual, output)
+		assertEquals(expected, actual)
 	}
 }
