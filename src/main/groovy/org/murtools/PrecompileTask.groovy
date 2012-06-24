@@ -11,6 +11,7 @@ class PrecompileTask extends DefaultTask {
 	final def DEFAULT_SRC_DIR = 'src/main/webapp'
 	final def DEFAULT_WORKDIR = 'build/scalate-out/work'
 	final def DEFAULT_CLASSES = 'build/classes/main'
+	final def NoArgs = null
 	
 	File templateSrcDir
 	File workingDirectory
@@ -21,15 +22,23 @@ class PrecompileTask extends DefaultTask {
 	
 	@TaskAction
 	protected void start() {
-		def classpathURLs = convertURL(project.files(project.configurations.compile, targetDirectory ?: DEFAULT_CLASSES))
+		def targetDirectorySpec = targetDirectory ?: project.file(DEFAULT_CLASSES)
+		def templateSrcDirSpec = templateSrcDir ?: project.file(DEFAULT_SRC_DIR)
+		def workingDirectorySpec = workingDirectory ?: project.file(DEFAULT_WORKDIR)
+		
+		log.info("sources: given[$templateSrcDir], actual[$templateSrcDirSpec]")
+		log.info("targetDirectory: given[$targetDirectory], actual[$targetDirectorySpec]")
+		log.info("workingDirectory: given[$workingDirectory], actual[$workingDirectorySpec]")
+		
+		def classpathURLs = convertURL(project.files(project.configurations.compile, targetDirectorySpec))
 		def precompiler = loadPrecompiler(classpathURLs)
-		precompiler.invokeMethod('sources_$eq', templateSrcDir ?: DEFAULT_SRC_DIR)
-		precompiler.invokeMethod('workingDirectory_$eq', workingDirectory ?: DEFAULT_WORKDIR)
-		precompiler.invokeMethod('targetDirectory_$eq', targetDirectory ?: DEFAULT_CLASSES)
+		precompiler.invokeMethod('sources_$eq', templateSrcDirSpec)
+		precompiler.invokeMethod('workingDirectory_$eq', workingDirectorySpec)
+		precompiler.invokeMethod('targetDirectory_$eq', targetDirectorySpec)
 		precompiler.invokeMethod('templates_$eq', templates?.toArray())
 		precompiler.invokeMethod('contextClass_$eq', contextClass)
 		precompiler.invokeMethod('bootClassName_$eq', bootClassName)
-		precompiler.invokeMethod("execute", null);
+		precompiler.invokeMethod("execute", NoArgs);
 	}
 
 	private GroovyObject loadPrecompiler(URL[] classpathURLs) {
@@ -42,8 +51,7 @@ class PrecompileTask extends DefaultTask {
 	}
 
 	private URL[] convertURL(FileCollection files) {
-		def paths = files*.path
-		println "$paths"
+		log.debug "${files*.path}"
 		
 		return files.collect {it.toURL()}
 	}
