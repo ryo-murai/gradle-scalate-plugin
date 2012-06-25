@@ -31,6 +31,11 @@ jar {
     }
 }
 
+test << {
+	testprojectClean.execute()
+	testprojectTest.execute()
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.0'
 }
