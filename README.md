@@ -10,6 +10,7 @@ in Gradle build script. Currently, task for `precompile` of templates is support
 * The plugin depends on `'scala'` plugin. Include below in your build script.
 
     apply plugin: 'scala'
+    
 
 * Add necessary dependencies for scala. See [user manual for "gradle scala plugin"](http://gradle.org/docs/current/userguide/scala_plugin.html#N12952).
 
@@ -37,7 +38,7 @@ There is no public repository available for the plugin. Instead, it is shared in
         }
 
         dependencies {
-            classpath 'murtools:gradle-scalate-plugin:0.0.2'
+            classpath 'murtools:gradle-scalate-plugin:0.0.1'
         }
     }
 
