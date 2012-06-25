@@ -1,4 +1,4 @@
-package org.murtools
+package org.murtools.gradle.plugins.scalate
 
 import groovy.util.logging.Slf4j;
 import groovy.util.Proxy
