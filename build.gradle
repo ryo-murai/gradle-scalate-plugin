@@ -31,11 +31,6 @@ jar {
     }
 }
 
-test << {
-	testprojectClean.execute()
-	testprojectTest.execute()
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = '1.0'
 }
@@ -65,18 +60,23 @@ uploadArchives {
     }
 }
 
+task putJar2testproject(type: Copy, dependsOn: jar) {
+	from jar.archivePath
+	into 'testproject/lib'
+}
 
-task testprojectTest(type: GradleBuild) {
-	copy {
-		from jar.archivePath
-		into 'testproject/lib'
-	}
+task testprojectTest(type: GradleBuild, dependsOn: putJar2testproject) {
 	buildFile = 'testproject/build.gradle'
 	tasks = ['scalatePreCompile', 'test']
 }
-testprojectTest.dependsOn(jar)
 
-task testprojectClean(type: GradleBuild) {
+task testprojectClean(type: GradleBuild, dependsOn: putJar2testproject) {
 	buildFile = 'testproject/build.gradle'
 	tasks = ['clean']
 }
+
+test << {
+	testprojectClean.execute()
+	testprojectTest.execute()
+}
+test.dependsOn(putJar2testproject)

@@ -18,6 +18,7 @@ class ScalatePlugin implements Plugin<Project> {
 		
 		project.afterEvaluate {
 			precompileTask.dependsOn project.compileScala
+			project.classes.dependsOn precompileTask
 		}
 	}
 
