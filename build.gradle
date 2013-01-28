@@ -45,7 +45,7 @@ uploadArchives {
         def propFile = new File(credDir, 'credentials.properties')
         def cred = new ConfigSlurper().parse(propFile.toURL())
         repositories.mavenDeployer {
-            configuration = configurations.deployer
+            configuration = configurations.publisher
             repository(url: 'dav:https://repository-rmci.forge.cloudbees.com/release/') {
                 authentication(userName: cred.publish.user, password: cred.publish.password)
             }
