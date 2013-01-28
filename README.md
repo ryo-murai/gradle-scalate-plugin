@@ -8,42 +8,43 @@ in Gradle build script. Currently, task for `precompile` of templates is support
 ## Prerequired
 
 * The plugin depends on `'scala'` plugin. Include below in your build script.
-
+```
     apply plugin: 'scala'
-    
+```
 
 * Add necessary dependencies for scala. See [user manual for "gradle scala plugin"](http://gradle.org/docs/current/userguide/scala_plugin.html#N12952).
 
 * Add scalate-core.jar in your project dependencies with `:compile` configuration.
-
+```
         dependencies {
             compile 'org.fusesource.scalate:scalate-core:1.5.3'
         }
-
+```
 
 ## Usage
 
 To use the plugin, include in your build script:
-
+```
     apply plugin: 'scalate'
+```
 
-The plugin JAR is needed in the classpath of your build script. 
-There is no public repository available for the plugin. Instead, it is shared in a Dropbox link. Below script snippet is an example on how to retrieve the plugin jar.
+The plugin JAR is needed in the classpath of your build script. You need cloudbees repository aside from central.
+Below script snippet is an example on how to retrieve the plugin jar.
 
+```
     buildscript {
         repositories {
-            ivy {
-                url 'http://dl.dropbox.com/u/1644238/mvnrepository/'
+            mavenCentral()
+            maven {
+                url "http://repository-rmci.forge.cloudbees.com/release/"
             }
         }
 
         dependencies {
-            classpath 'murtools:gradle-scalate-plugin:0.0.1'
+            classpath 'murtools:gradle-scalate-plugin:0.0.2'
         }
     }
-
-
-
+```
 
 ## Tasks
 
@@ -60,3 +61,4 @@ The plugin defines the following tasks:
 
 ## Todo
 * 
+
