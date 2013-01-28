@@ -1,23 +1,31 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
+def defaultVersion = '0.0.1-SNAPSHOT'
+
 def compatibilityVersion = 1.5
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
-group = 'murtools'
-version = '0.0.1'
 
-def localRepoDir = new File(System.getProperty('user.home'), 'localrepository').absolutePath
+group = 'murtools'
+version = System.properties['production.ver'] ?: defaultVersion
+
+configurations {
+    publisher {
+        description = 'libraries to publish the artifacts to the repository'
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    groovy fileTree(dir: new File(gradle.gradleHomeDir, 'lib'), includes: ['**/groovy-all-*.jar'])
+    groovy localGroovy()
     compile gradleApi()
 
-	testCompile 'org.fusesource.scalate:scalate-core:1.5.3'
+    testCompile 'org.fusesource.scalate:scalate-core:1.5.3'
+    publisher 'org.apache.maven.wagon:wagon-webdav:1.0-beta-2'
 }
 
 jar {
@@ -31,49 +39,40 @@ jar {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.0'
-}
-
-task sourcesJar(type: Jar) {
-    description 'An archive of the source code'
-    classifier 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives sourcesJar
-}
-
 uploadArchives {
-    repositories {
-        ivy {
-            url localRepoDir
+    def credDir = System.properties['credentialPlace']
+    if(credDir != null) {
+        def propFile = new File(credDir, 'credentials.properties')
+        def cred = new ConfigSlurper().parse(propFile.toURL())
+        repositories.mavenDeployer {
+            configuration = configurations.deployer
+            repository(url: 'dav:https://repository-rmci.forge.cloudbees.com/release/') {
+                authentication(userName: cred.publish.user, password: cred.publish.password)
+            }
+        }
+    } else {
+        doLast {
+            println '''
+            * * * NOTE: uploadArchives is disabled. * * *
+            to enable this, you need :
+             - edit `credentials.properties` file describes repository credential for upload like
+                    publish {
+                      user = 'your user account id'
+                      password = 'your password'
+                    }
+             - passing -DcredentialPlace=(where the credential.properties located) to your gradle command option
+            '''
         }
     }
 }
 
-clean << {
-	delete 'testproject/lib'
+task testprojectTest(type: GradleBuild) {
+    dir = file('testproject')
+    buildFile = file('testproject/build.gradle')
+    tasks = ['clean', 'scalatePreCompile', 'test']
 }
 
-task putJar2testproject(type: Copy, dependsOn: jar) {
-	from jar.archivePath
-	into 'testproject/lib'
+test {
+    dependsOn(testprojectTest)
+    jvmArgs '-Xmx=1024m -XX:MaxPermSize=256m'
 }
-
-task testprojectTest(type: GradleBuild, dependsOn: putJar2testproject) {
-	buildFile = 'testproject/build.gradle'
-	tasks = ['scalatePreCompile', 'test']
-}
-
-task testprojectClean(type: GradleBuild, dependsOn: putJar2testproject) {
-	buildFile = 'testproject/build.gradle'
-	tasks = ['clean']
-}
-
-test << {
-	testprojectClean.execute()
-	testprojectTest.execute()
-}
-test.dependsOn(putJar2testproject)

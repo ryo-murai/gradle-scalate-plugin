@@ -4,33 +4,36 @@ apply plugin: 'scalate'
 def scalaVersion = '2.9.2'
 
 buildscript {
-	repositories {
-		mavenCentral()
-		flatDir(dirs: 'lib') 
-	}
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://repository-rmci.forge.cloudbees.com/release/"
+        }
+    }
 
-	dependencies {
-		classpath 'murtools:gradle-scalate-plugin:0.0.1'
-	}
+    dependencies {
+        classpath 'murtools:gradle-scalate-plugin:0.0.2'
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// Libraries needed for scala
-	compile "org.scala-lang:scala-library:$scalaVersion"
-	// Libraries needed to run the scala tools
-	scalaTools "org.scala-lang:scala-compiler:$scalaVersion"
-	scalaTools "org.scala-lang:scala-library:$scalaVersion"
+    // Libraries needed for scala
+    compile "org.scala-lang:scala-library:$scalaVersion"
 
-	// Scalate Library
-	compile 'org.fusesource.scalate:scalate-core:1.5.3'
+    // Libraries needed to run the scala tools
+    scalaTools "org.scala-lang:scala-compiler:$scalaVersion"
+    scalaTools "org.scala-lang:scala-library:$scalaVersion"
 
-	testCompile 'junit:junit:4.10'
+    // Scalate Library
+    compile 'org.fusesource.scalate:scalate-core:1.5.3'
+
+    testCompile 'junit:junit:4.10'
 }
 
 scalatePreCompile {
-	contextClass = 'org.fusesource.scalate.DefaultRenderContext'
+    contextClass = 'org.fusesource.scalate.DefaultRenderContext'
 }
