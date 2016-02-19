@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
-def defaultVersion = '0.0.1-SNAPSHOT'
+def defaultVersion = '0.0.3'
 
 def compatibilityVersion = 1.5
 sourceCompatibility = compatibilityVersion
