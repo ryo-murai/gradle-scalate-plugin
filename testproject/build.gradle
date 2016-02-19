@@ -29,7 +29,7 @@ dependencies {
     scalaTools "org.scala-lang:scala-library:$scalaVersion"
 
     // Scalate Library
-    compile 'org.fusesource.scalate:scalate-core:1.5.3'
+    compile 'org.scalatra.scalate:scalate-core_2.11:1.7.1'
 
     testCompile 'junit:junit:4.10'
 }

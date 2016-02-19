@@ -12,7 +12,7 @@ class ScalatePlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
 		
-		PrecompileTask precompileTask = project.tasks.add(SCALATE_PRECOMPILE, PrecompileTask)
+		PrecompileTask precompileTask = project.task(SCALATE_PRECOMPILE, type: PrecompileTask)
 		precompileTask.description = 'Precompile the scalate templates'
 		precompileTask.group = 'Scalate'
 		

@@ -21,10 +21,10 @@ repositories {
 }
 
 dependencies {
-    groovy localGroovy()
+    compile localGroovy()
     compile gradleApi()
 
-    testCompile 'org.fusesource.scalate:scalate-core:1.5.3'
+    testCompile 'org.scalatra.scalate:scalate-core_2.11:1.7.1'
     publisher 'org.apache.maven.wagon:wagon-webdav:1.0-beta-2'
 }
 
